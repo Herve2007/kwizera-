@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kwizera Herve | Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+<style>
+/* Reset & Fonts */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Roboto', sans-serif; background-color: #f9f9f9; color: #333; }
+
+/* Hidden portfolio initially */
+#portfolio { display: none; }
+
+/* Auth Card */
+.auth-wrapper {
+  display: flex; justify-content: center; align-items: center; height: 100vh;
+  background: linear-gradient(135deg, #00bfff, #0d1117);
+}
+.auth-card {
+  background: #fff; padding: 40px; border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3); width: 350px; text-align: center; transition: 0.3s;
+}
+.auth-card h2 { margin-bottom: 20px; font-family: 'Poppins', sans-serif; }
+.auth-card input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ccc; }
+.auth-card button { width: 100%; padding: 12px; border: none; border-radius: 50px; background-color: #00bfff; color: #fff; font-weight: 500; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+.auth-card button:hover { background-color: #0077b3; }
+.toggle-link { margin-top: 15px; display: block; color: #00bfff; cursor: pointer; font-size: 0.9rem; }
+.error-msg { color: red; margin-top: 10px; font-size: 0.9rem; }
+
+/* Logout Button */
+#logoutBtn {
+  position: fixed; top: 20px; right: 20px; padding: 10px 20px; background-color: #ff4d4d;
+  color: #fff; border: none; border-radius: 50px; cursor: pointer; display: none; z-index: 100;
+  transition: 0.3s;
+}
+#logoutBtn:hover { background-color: #cc0000; }
+
+/* Portfolio Design */
+nav {
+  position: sticky; top: 0; background-color: #0d1117; z-index: 100;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+nav ul { display: flex; justify-content: center; list-style: none; padding: 15px 0; }
+nav ul li { margin: 0 25px; }
+nav ul li a { color: #fff; text-decoration: none; font-weight: 500; letter-spacing: 0.5px; transition: 0.3s; }
+nav ul li a:hover { color: #00bfff; }
+
+/* Hero Section */
+header {
+  background: linear-gradient(135deg, #00bfff, #0d1117);
+  color: #fff; height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px;
+}
+header h1 { font-family: 'Poppins', sans-serif; font-size: 4rem; margin-bottom: 15px; }
+header p { font-size: 1.5rem; margin-bottom: 30px; }
+header a { text-decoration: none; color: #0d1117; background-color: #fff; padding: 15px 30px; font-weight: 600; border-radius: 50px; transition: 0.3s; }
+header a:hover { background-color: #00bfff; color: #fff; }
+
+/* Sections */
+section { padding: 80px 20px; max-width: 1100px; margin: auto; }
+section h2 { font-family: 'Poppins', sans-serif; text-align: center; font-size: 2.5rem; margin-bottom: 30px; position: relative; }
+section h2::after { content: ''; display: block; width: 80px; height: 4px; background-color: #00bfff; margin: 10px auto 0; border-radius: 2px; }
+
+/* About */
+#about p { font-size: 1.15rem; line-height: 1.8; max-width: 800px; margin: auto; text-align: center; }
+
+/* Projects */
+.projects-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; }
+.project-card {
+  background-color: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s;
+}
+.project-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+.project-card img { width: 100%; height: 200px; object-fit: cover; transition: transform 0.3s; }
+.project-card:hover img { transform: scale(1.05); }
+.project-card h3 { margin: 15px; font-size: 1.3rem; color: #0d1117; }
+.project-card p { margin: 0 15px 15px; font-size: 0.95rem; color: #555; }
+.project-card a { display: block; margin: 0 15px 15px; text-align: center; padding: 10px 0; background-color: #00bfff; color: #fff; border-radius: 50px; font-weight: 500; text-decoration: none; transition: 0.3s; }
+.project-card a:hover { background-color: #0077b3; }
+
+/* Contact */
+.contact-info { text-align: center; margin-bottom: 30px; }
+.contact-info p { font-size: 1.1rem; margin: 8px 0; }
+.contact-info a { color: #00bfff; text-decoration: none; }
+.contact-info a:hover { text-decoration: underline; }
+form.contact-form { max-width: 500px; margin: auto; display: flex; flex-direction: column; }
+form.contact-form input, form.contact-form textarea { margin-bottom: 15px; padding: 15px; border-radius: 10px; border: 1px solid #ccc; font-size: 1rem; transition: 0.3s; }
+form.contact-form input:focus, form.contact-form textarea:focus { border-color: #00bfff; outline: none; }
+form.contact-form button { padding: 15px; border: none; border-radius: 50px; background-color: #00bfff; color: #fff; font-size: 1rem; cursor: pointer; font-weight: 500; transition: 0.3s; }
+form.contact-form button:hover { background-color: #0077b3; }
+
+/* Footer */
+footer { background-color: #0d1117; color: #fff; text-align: center; padding: 25px 20px; }
+
+/* Responsive */
+@media (max-width: 768px) { header h1 { font-size: 3rem; } header p { font-size: 1.2rem; } nav ul li { margin: 0 15px; } }
+</style>
+</head>
+<body>
+
+<!-- Authentication Card -->
+<div class="auth-wrapper" id="authPage">
+  <div class="auth-card">
+    <h2 id="authTitle">Login</h2>
+    <form id="authForm">
+      <input type="email" id="authEmail" placeholder="Email" required>
+      <input type="password" id="authPassword" placeholder="Password" required>
+      <button type="submit">Login</button>
+    </form>
+    <span class="toggle-link" id="toggleAuth">Don't have an account? Sign Up</span>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+</div>
+
+<!-- Logout Button -->
+<button id="logoutBtn">Logout</button>
+
+<!-- Portfolio -->
+<div id="portfolio">
+  <nav>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About Me</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <header id="home">
+    <h1>Kwizera Herve</h1>
+    <p>Aspiring Web Developer & Designer</p>
+    <a href="#contact">Get in Touch</a>
+  </header>
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hello! I'm Kwizera Herve, a beginner web developer passionate about creating modern, responsive, and visually appealing websites. I enjoy solving problems and learning new technologies every day.</p>
+  </section>
+  <section id="projects">
+    <h2>My Projects</h2>
+    <div class="projects-container">
+      <div class="project-card">
+        <img src="https://via.placeholder.com/300x200.png?text=Portfolio+Website" alt="Portfolio Website">
+        <h3>Portfolio Website</h3>
+        <p>A website to showcase my work and skills in a modern layout.</p>
+        <a href="#">View Project</a>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/300x200.png?text=To-Do+App" alt="To-Do App">
+        <h3>Mini To-Do App</h3>
+        <p>A task manager app to organize daily tasks effectively.</p>
+        <a href="#">View Project</a>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/300x200.png?text=Calculator+App" alt="Calculator App">
+        <h3>Calculator App</h3>
+        <p>A basic calculator built with JavaScript to perform operations easily.</p>
+        <a href="#">View Project</a>
+      </div>
+    </div>
+  </section>
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <div class="contact-info">
+      <p>Email: <a href="mailto:elvinkwizera200@gmail.com">elvinkwizera200@gmail.com</a></p>
+      <p>Phone: <a href="tel:+250792802682">+250 792802682</a></p>
+      <p>GitHub: <a href="https://github.com/Herve2007" target="_blank">github.com/Herve2007</a></p>
+    </div>
+    <form class="contact-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <input type="text" placeholder="Subject" required>
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+  <footer>
+    <p>© 2025 Kwizera Herve. All rights reserved.</p>
+  </footer>
+</div>
+
+<script>
+// Auth logic
+let isLogin = true;
+const authTitle = document.getElementById('authTitle');
+const toggleAuth = document.getElementById('toggleAuth');
+const authForm = document.getElementById('authForm');
+const errorMsg = document.getElementById('errorMsg');
+const logoutBtn = document.getElementById('logoutBtn');
+const authPage = document.getElementById('authPage');
+const portfolio = document.getElementById('portfolio');
+
+// In-memory accounts
+const accounts = [];
+
+toggleAuth.addEventListener('click', () => {
+  isLogin = !isLogin;
+  errorMsg.textContent = '';
+  if(isLogin) {
+    authTitle.textContent = 'Login';
+    authForm.innerHTML = `
+      <input type="email" id="authEmail" placeholder="Email" required>
+      <input type="password" id="authPassword" placeholder="Password" required>
+      <button type="submit">Login</button>
+    `;
+    toggleAuth.textContent = "Don't have an account? Sign Up";
+  } else {
+    authTitle.textContent = 'Sign Up';
+    authForm.innerHTML = `
+      <input type="text" id="authName" placeholder="Full Name" required>
+      <input type="email" id="authEmail" placeholder="Email" required>
+      <input type="password" id="authPassword" placeholder="Password" required>
+      <button type="submit">Sign Up</button>
+    `;
+    toggleAuth.textContent = "Already have an account? Login";
+  }
+});
+
+authForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value.trim();
+
+  if(isLogin) {
+    const user = accounts.find(acc => acc.email === email && acc.password === password);
+    if(user) {
+      authPage.style.display = 'none';
+      portfolio.style.display = 'block';
+      logoutBtn.style.display = 'block'; // show logout
+    } else {
+      errorMsg.textContent = "Invalid email or password!";
+    }
+  } else {
+    const name = document.getElementById('authName').value.trim();
+    if(accounts.find(acc => acc.email === email)) {
+      errorMsg.textContent = "Email already registered!";
+      return;
+    }
+    accounts.push({ name, email, password });
+    errorMsg.textContent = "Account created! You can login now.";
+    toggleAuth.click();
+  }
+});
+
+logoutBtn.addEventListener('click', () => {
+  portfolio.style.display = 'none';
+  authPage.style.display = 'flex';
+  logoutBtn.style.display = 'none';
+  isLogin = true;
+  toggleAuth.click();
+});
+</script>
+</body>
+</html>
